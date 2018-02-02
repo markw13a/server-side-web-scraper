@@ -1,26 +1,26 @@
-var Company = require('../models/company');
 var Opportunity = require('../models/opportunity');
-
 var mongoose = require('mongoose');
 var async = require('async');
 
-var db;
+let db;
+let category;
 
 exports.index = function(req, res){
 	db = initDB();
+	category = req.params.sortBy;
 	
-	db.once("open", function(){
-		async.waterfall([
-				downloadJobs
-			], 
-			function(err, jobsArray){
-				let sortedByCompany = jobsArray;
-				res.render('index', {data: jobsArray});
-		});
+	db.once("open", function(){		
+			async.waterfall(
+				[downloadJobs,
+				 sortResults],
+				function render(err, jobsArray){
+					res.render('index', {data: jobsArray});
+				}
+			);
 	});
 };
 
-let initDB = function(){
+function initDB(){
 	var mongodb = 'mongodb://admin:admin1453@ds247047.mlab.com:47047/visadb';
 	mongoose.connect(mongodb, {useMongoClient: true});
 	mongoose.Promise = global.Promise;
@@ -29,32 +29,87 @@ let initDB = function(){
 	return db;
 };
 
-// exports.index = function(req, res){
-	// async.waterfall([
-			// initDB,
-			// downloadJobs
-		// ], 
-		// function(err, jobsArray){
-			// if(err){
-				// throw err;
-			// }
-			// res.render('index', {data: jobsArray});
-	// });
-// };
-
-// let initDB = function(callback){
-	// var mongodb = 'mongodb://admin:admin1453@ds247047.mlab.com:47047/visadb';
-	// mongoose.connect(mongodb, {useMongoClient: true});
-	// mongoose.Promise = global.Promise;
-	// var db = mongoose.connection;
-	
-	// callback(null, db);
-// };
-
-let downloadJobs = function(callback){
+function downloadJobs(cb){
+	console.log("here");
 	db.db.collection("opportunities", function(err, results){
 		Opportunity.find({}, function exportCollection(err, contents){
-			callback(null, contents);
+			cb(null, contents);
 		});
 	});
+};
+
+function sortResults(jobsArray, cb){
+	sortByCategory(category, jobsArray);
+	cb(null, jobsArray);
+};
+
+function sortByCategory(category, array){
+	switch(category){
+		case "jobTitle":
+			array.sort(titleComparison);
+			break;
+			
+		case "companyName":
+			array.sort(companyComparison);
+			break;
+			
+		case "jobLocation":
+			array.sort(locationComparison);
+			break;
+			
+		case "website":
+			array.sort(websiteComparison);
+			break;
+		
+		default:
+			break;
+	};
+};
+
+function titleComparison(a, b){
+	let titleA = a.jobTitle;
+	let titleB = b.jobTitle;
+	
+	if(titleA < titleB){
+		return -1;
+	}
+	else{
+		return 1;
+	}
+};
+
+function companyComparison(a, b){
+	let companyA = a.companyName;
+	let companyB = b.companyName;
+	
+	if(companyA < companyB){
+		return -1;
+	}
+	else{
+		return 1;
+	}
+};
+
+function locationComparison(a, b){
+	let locationA = a.jobLocation;
+	let locationB = b.jobLocation;
+	
+	if(locationA < locationB){
+		return -1;
+	}
+	else{
+		return 1;
+	}
+};
+
+function websiteComparison(a, b){
+	let websiteA = a.website;
+	let websiteB = b.website;
+	
+	if(websiteA < websiteB){
+		return -1;
+	}
+	else{
+		return 1;
+	}
 };

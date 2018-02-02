@@ -10,7 +10,6 @@ var events = require('events');
 //Need to know when initDB has completed execution. Would rather not have to handle event generation manually if at all possible
 var eventEmitter = new events.EventEmitter();
 var siteObjects;
-//Remove from global scope and place nearer to where they're actually used
 var fuse;
 var fuseOptions = {
 		caseSensitive: false,
