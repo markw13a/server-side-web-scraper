@@ -41,7 +41,7 @@ function runJobSearch(sitesToScrape){
 				if(err){
 					throw err;
 				};
-				mongoose.connection.close();
+				//mongoose.connection.close();
 			});
 		}	
 	});
@@ -118,6 +118,7 @@ function pushToDatabase(jobObjectArray, callback){
 					salary:	jobObject.salary,
 					jobLocation: jobObject.jobLocation,
 					website: jobObject.website,  
+					deadline: jobObject.deadline,
 					companyName: companyData.name,
 					company: new Company(companyData)
 			  });

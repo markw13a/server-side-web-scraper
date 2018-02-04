@@ -61,6 +61,9 @@ function sortByCategory(category, array){
 			array.sort(websiteComparison);
 			break;
 		
+		case "deadline":
+			array.sort(deadlineComparison);
+			break;
 		default:
 			break;
 	};
@@ -107,6 +110,18 @@ function websiteComparison(a, b){
 	let websiteB = b.website;
 	
 	if(websiteA < websiteB){
+		return -1;
+	}
+	else{
+		return 1;
+	}
+};
+
+function deadlineComparison(a, b){
+	let deadlineA = a.deadline;
+	let deadlineB = b.deadline;
+	
+	if(deadlineA < deadlineB){
 		return -1;
 	}
 	else{
