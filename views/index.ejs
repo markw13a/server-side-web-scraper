@@ -18,13 +18,21 @@
 			<th>
 				<a href="/website"> Extracted from </a>
 			</th>
+			<th>
+				<a href="/deadline">Closing date</a>
+			</th>
 		</tr>
 		<% for(let i =0; i<data.length; i++){%>
 			<tr>
 				<td><%=data[i].jobTitle%></td>
 				<td><%=data[i].companyName%></td>
 				<td><%=data[i].jobLocation%></td>
-				<td><%=data[i].website%></td>
+				<td>
+					<a href=<%=data[i].website%> target="_blank">
+						<%=data[i].website%>
+					</a>
+				</td>
+				<td><%=(data[i].deadline.getDate()) +"/"+ (data[i].deadline.getMonth()+1) + "/" + data[i].deadline.getFullYear() %></td>
 			</tr>
 		<%}%>
 	</table>

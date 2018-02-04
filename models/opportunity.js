@@ -9,6 +9,7 @@ var OpportunitySchema = new Schema({
 	jobLocation: {type: String},
 	website: {type: String, required: true},
 	companyName: {type: String},
+	deadline: {type: Date},
 	company: {type: Schema.ObjectId, ref: 'Company'},
 });
 

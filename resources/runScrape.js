@@ -12,36 +12,42 @@ let siteObjects = [];
 function gradCrackerExtractor(){	
 	let site = this.getURL();
 	let html = this.getHTML();
-
+	//'div[class=tbl]'
 	let $ = cheerio.load(html);
 	let outArray = [];
 
 	//Find salaries & location
-	$('div[class=tbl]').each(function(i, ele){
+	$('.e-result,.e-item').each(function(i, ele){
+		//console.log($(this).html());
 		let jobInfoCard = $(this);
-		let salaryAndLocation = jobInfoCard.find('div:nth-child(2) > div:first-child > div > div > div > div').html();
+		let miscInformation = jobInfoCard.find('div:nth-child(3)').html();
 		let imageLink = jobInfoCard.find('div > div > div > div > a').attr().href;
-
-		//As Salary and location information is not included within DOM for Gradcracker, forced to use regex to extract this information
-		let salaryRegEx = /<strong>Salary:<\/strong>(.*)<br>/;
+		let jobPageLink = jobInfoCard.find('div > div > div > h2 > a').attr().href;
+		//As Salary, location and closing date are not included within DOM for Gradcracker, forced to use regex to extract this information
+		let salaryRegEx = /Salary:<\/strong>(.*)<br>/;
 		let locationRegEx = /<strong>Location:<\/strong>(.*)<br>/;
-		
+		let deadlineRegEx = /<strong>Closing Date:<\/strong>([\s\S]*?)<\/div>/;
+ 
 		let newJobObj = {
 			 jobTitle: null, 
 			 salary: null,
 			 jobLocation: null,
 			 website: null,
+			 deadline: null,
 			 company: null
 		}
-		
+		console.log(miscInformation.match(deadlineRegEx) ? toDate(miscInformation.match(deadlineRegEx)[1]) : new Date('January 1, 2161'));
 		newJobObj.jobTitle = jobInfoCard.find('h2[class=opportunity-title] > a').html();
-		newJobObj.salary = salaryAndLocation.match(salaryRegEx)[1];
-		newJobObj.jobLocation = salaryAndLocation.match(locationRegEx)[1];
-		newJobObj.website = site;
+		newJobObj.salary = miscInformation.match(salaryRegEx)[1];
+		newJobObj.jobLocation = miscInformation.match(locationRegEx)[1];
+		newJobObj.website = jobPageLink;
+		newJobObj.deadline = miscInformation.match(deadlineRegEx) ? toDate(miscInformation.match(deadlineRegEx)[1]) : new Date('January 1, 2161');
 		newJobObj.company  = extractCompanyNameFromURL(imageLink);
+		
 		
 		outArray.push(newJobObj);
 	});
+
 	return(outArray);
 };
 //Name of company is not directly listed for Gradcracker job postings: images are used instead. I still need the company's name for a later database query, and it turns out that the only reference to the the company's name on the entire job posting is as an argument to an internal link.
@@ -59,7 +65,30 @@ function extractCompanyNameFromURL(url){
 	return companyName;
 };
 
-for(let i =0; i < 17; i++){
+//Takes in closing date and returns as a valid Date object.
+//Purpose of function is to deal with invalid date inputs used on some sites such as "Today"
+function toDate(date){
+	let dateObject;
+	
+	try{
+		dateObject = new Date(date);
+	}
+	catch(err){
+		if(date.contains('Today')){
+			dateObject = new Date();
+		}
+		else{
+			//Default return object
+			dateObject = new Date('January 1, 2161');
+		}
+	}
+	finally{
+		return dateObject;
+	}
+};
+
+
+for(let i =0; i < 16; i++){
 	let newSite = new Site(gradCrackURL + "?page=" + i);
 	newSite.setExtractRelevantInfo(gradCrackerExtractor);
 	siteObjects.push(newSite);
