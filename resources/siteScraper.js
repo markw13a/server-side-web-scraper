@@ -32,19 +32,19 @@ function runJobSearch(sitesToScrape){
 	eventEmitter.once("initialised", function main(){
 	//Provided only with a list of Site() objects to iterate over
 	//Run through all of the websites provided by siteObjects, and upload all job opportunities given on the page to a database
-	while(siteObjects.length > 0){
-		async.waterfall([             
-				extractHTML,
-				extractJobListings,
-				pushToDatabase
-			], function(err, result){
-				if(err){
-					throw err;
-				};
-				//mongoose.connection.close();
-			});
-		}	
-	});
+		while(siteObjects.length > 0){
+			async.waterfall([             
+					extractHTML,
+					extractJobListings,
+					pushToDatabase
+				], function(err, result){
+					if(err){
+						throw err;
+					};
+					//mongoose.connection.close();
+				});
+			}	
+		});
 };
 
 module.exports = runJobSearch;
@@ -60,12 +60,20 @@ function initDB(){
 	
 	//Stairway to callback hell
 	db.once("open", function retrieveDB(){
+		//Save contents of "companies" collection to local variable
 		db.db.collection("companies", function retrieveCollection(err, collection){
 			Company.find({}, function saveCollection(err, jsonDB){
 				fuse = new Fuse(jsonDB, fuseOptions);
 				eventEmitter.emit("initialised");
 			});
 		});
+		//Delete the contents of "opportunities" in anticipation of it being updated
+		//This is a bit risky. Thinking about uploading first to a temp collection, then pushing to opportunities
+		//If an error occurs during scraping, we might be left without data to display
+		db.db.collection("opportunities", function deleteContents(err, opportunities){
+			opportunities.remove({});
+		});
+		
 	});
 };
 

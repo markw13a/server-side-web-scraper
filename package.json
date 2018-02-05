@@ -1,9 +1,8 @@
 {
   "name": "practiceapp",
   "version": "0.0.0",
-  "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "async": "^2.6.0",

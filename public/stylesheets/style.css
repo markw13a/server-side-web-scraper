@@ -1,6 +1,56 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Merriweather Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.5em;
+  height: 100vh;
+  width: 100vw;
+}
+
+.grid-wrapper{
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 1fr 6fr 1fr;
+	grid-template-rows: 100px auto 1fr 70px;
+	grid-template-areas:
+		"header header header"
+		"lhs blurb rhs"
+		"lhs table rhs"
+		"footer footer footer";
+}
+
+header{
+	grid-area: header;
+	background-color: #000;
+}
+
+#blurb{
+	grid-area: blurb;
+}
+
+table{
+	grid-area: table;
+
+}
+
+.side-margin{
+}
+
+#lhs{
+	grid-area: lhs;
+}
+
+#rhs{
+	grid-area: rhs;
+}
+
+footer{
+	grid-area: footer;
+	background-color: #000;
 }
 
 a {

@@ -36,7 +36,6 @@ function gradCrackerExtractor(){
 			 deadline: null,
 			 company: null
 		}
-		console.log(miscInformation.match(deadlineRegEx) ? toDate(miscInformation.match(deadlineRegEx)[1]) : new Date('January 1, 2161'));
 		newJobObj.jobTitle = jobInfoCard.find('h2[class=opportunity-title] > a').html();
 		newJobObj.salary = miscInformation.match(salaryRegEx)[1];
 		newJobObj.jobLocation = miscInformation.match(locationRegEx)[1];
@@ -68,23 +67,22 @@ function extractCompanyNameFromURL(url){
 //Takes in closing date and returns as a valid Date object.
 //Purpose of function is to deal with invalid date inputs used on some sites such as "Today"
 function toDate(date){
-	let dateObject;
+	let dateObject = new Date(date);
 	
-	try{
-		dateObject = new Date(date);
-	}
-	catch(err){
-		if(date.contains('Today')){
+	//Check if dateObject is a valid date
+	if(isNaN(dateObject.getTime())){
+		
+		if(date.includes('Today')){
 			dateObject = new Date();
 		}
 		else{
 			//Default return object
 			dateObject = new Date('January 1, 2161');
 		}
+		
 	}
-	finally{
-		return dateObject;
-	}
+	
+	return dateObject;
 };
 
 
