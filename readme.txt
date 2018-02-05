@@ -12,8 +12,12 @@ Managed to solve the problem of inexact matches (companies being known by differ
 While there remains a lot of work to do, the front-end is just a default HTML table at the minute, I am quite happy with the results so far.
 
 TO DO:
--> Clean up main "scrapeTest.js" file: make it easier to read and interact with.
+-> Modify siteScraper to make use of a temporary collection rather than upload directly to "opportunities". Want to avoid risk of ending up with an empty collection.
 -> Make a half-decent looking page to display data from our database.
 -> Add more websites for our scraping-bot to trawl.
+-> Migrate to DB provided by host.
+
+COMPLETED:
+-> Clean up main "scrapeTest.js" file: make it easier to read and interact with.
 -> Add ability for user to sort data by different criteria (job title, salary, location, company name).
 -> Find a host for the website.
