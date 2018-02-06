@@ -32,19 +32,29 @@ function runJobSearch(sitesToScrape){
 	eventEmitter.once("initialised", function main(){
 	//Provided only with a list of Site() objects to iterate over
 	//Run through all of the websites provided by siteObjects, and upload all job opportunities given on the page to a database
-		while(siteObjects.length > 0){
-			async.waterfall([             
-					extractHTML,
-					extractJobListings,
-					pushToDatabase
-				], function(err, result){
-					if(err){
-						throw err;
-					};
-					//mongoose.connection.close();
-				});
-			}	
-		});
+	
+	//Need to use async.parallel instead of while loop so we can know when all jobs are complete. Not safe to close the database connection otherwise.
+		async.parallel(
+			Array(siteObjects.length).fill(processSite),
+			function terminate(err, result){
+				if(err) {throw err}
+				mongoose.connection.close();
+			}
+		);
+	 });
+	
+	function processSite(cb){
+		async.waterfall([             
+				extractHTML,
+				extractJobListings,
+				pushToDatabase
+			], function(err, result){
+				if(err){
+					throw err;
+				}
+				cb(null, null);
+			});
+	}
 };
 
 module.exports = runJobSearch;
@@ -73,8 +83,8 @@ function initDB(){
 		db.db.collection("opportunities", function deleteContents(err, opportunities){
 			opportunities.remove({});
 		});
-		
 	});
+	
 };
 
 
@@ -102,21 +112,33 @@ function extractJobListings(site, callback){
 //Adds any job listings found to an external database
 function pushToDatabase(jobObjectArray, callback){
 	
-	while(jobObjectArray.length > 0){
-			async.waterfall([
-					canSponsorVisa,
-					pushJobToCollection
-				]);
-		};
-		
+	async.parallel(
+		Array(jobObjectArray.length).fill(pushToDB),
+		function(err, result){
+			callback(null, null);
+		}
+	);
+	
+	function pushToDB(cb){
+		async.waterfall([
+			canSponsorVisa,
+			pushJobToCollection
+		],
+		function (err, result){
+			if(err){};
+			cb(null, result);
+		});
+	};
+	
 	//Checks if company is present in companies collection
-	function canSponsorVisa(callback){
+	function canSponsorVisa(cb){
 		let jobObject = jobObjectArray.pop();
 		//WARNING: this assumes that fuzzy match set to high precision will return either no match or a correct match. This could eventually lead to jobs being attributed to the wrong company
 		let searchResult = fuse.search(jobObject.company);
 		
 		if(searchResult.length == 0){
-			return console.log("Company '" + jobObject.company + "' not found in visadb");
+			//return console.log("Company '" + jobObject.company + "' not found in visadb");
+			cb(new Error("Company '" + jobObject.company + "' not found in visadb"), null);
 		} 
 		else{
 			let companyData = searchResult[0].item;
@@ -130,14 +152,14 @@ function pushToDatabase(jobObjectArray, callback){
 					companyName: companyData.name,
 					company: new Company(companyData)
 			  });
-			  callback(null, newJob);
+			  cb(null, newJob);
 		}
 	};
 
-	function pushJobToCollection(newJob, callback){
+	function pushJobToCollection(newJob, cb){
 		newJob.save(function(err){
-			if(err){throw err}
+			if(err){throw err};
+			cb(null, newJob);
 		});
-		callback(null, newJob);
 	};		
 };

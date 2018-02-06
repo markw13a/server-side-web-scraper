@@ -86,7 +86,7 @@ function toDate(date){
 };
 
 
-for(let i =0; i < 16; i++){
+for(let i =0; i < 1; i++){
 	let newSite = new Site(gradCrackURL + "?page=" + i);
 	newSite.setExtractRelevantInfo(gradCrackerExtractor);
 	siteObjects.push(newSite);
