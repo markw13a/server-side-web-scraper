@@ -26,6 +26,11 @@ body {
 header{
 	grid-area: header;
 	background-color: #000;
+	padding-left: 12.5%;
+}
+
+header > a, img{
+	position: relative;
 }
 
 #blurb{
