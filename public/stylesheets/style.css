@@ -18,7 +18,7 @@ body {
 	grid-template-areas:
 		". header ."
 		"lhs blurb rhs"
-		"lhs table rhs"
+		"lhs main-content rhs"
 		"footer footer footer";
 	
 }
@@ -52,9 +52,23 @@ header > #black-background{
 	margin: 15px 0;
 }
 
+#main-content{
+	grid-area: main-content;
+}
+
+#main-content > form{
+	float: left;
+	width: 355px;
+	margin: 20px 0;
+}
+
+#main-content > form > input:first-child{
+	width: 300px;
+}
+
 table{
-	grid-area: table;
 	border-collapse: collapse;
+	width: 100%;
 }
 
 table, th, td {
@@ -65,6 +79,14 @@ table, th, td {
 
 tr:nth-child(even){
 	background-color: #d3d3d3;
+}
+
+th{
+	text-decoration: underline; 
+}
+
+th:hover{
+	cursor: pointer;
 }
 
 .side-margin{

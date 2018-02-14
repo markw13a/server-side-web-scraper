@@ -4,6 +4,7 @@
 	<title>markw13a.co.uk: tier 2 job scanner</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/javascripts/queryManager.js"></script>
   </head>
 	 <body class="grid-wrapper">
 		<header>
@@ -24,38 +25,44 @@
 				If you have (somehow) found your way here from the wider internet, please feel free to make use of this site.
 			</p>
 		</div>
-		<table>
-			<tr>
-				<th>
-					<a href="/jobTitle"> Job Title </a>
-				</th>
-				<th>
-					<a href="/companyName"> Company </a>
-				</th>
-				<th>
-					<a href="/jobLocation"> Location </a>
-				</th>
-				<th>
-					<a href="/website"> Extracted from </a>
-				</th>
-				<th>
-					<a href="/deadline">Closing date</a>
-				</th>
-			</tr>
-			<% for(let i =0; i<data.length; i++){%>
+		<div id="main-content">
+			<form action="/" method="get">
+				<input type="text" name="query">
+				<input type="submit" value="Search">
+			</form>
+			<table>
 				<tr>
-					<td><%=data[i].jobTitle%></td>
-					<td><%=data[i].companyName%></td>
-					<td><%=data[i].jobLocation%></td>
-					<td>
-						<a href=<%=data[i].website%> target="_blank">
-							<%=data[i].website%>
-						</a>
-					</td>
-					<td><%=(data[i].deadline.getDate()) +"/"+ (data[i].deadline.getMonth()+1) + "/" + data[i].deadline.getFullYear() %></td>
+					<th>
+						<a onclick="queryManager('sortBy', 'jobTitle')"> Job Title </a>
+					</th>
+					<th>
+						<a onclick="queryManager('sortBy', 'companyName')"> Company </a>
+					</th>
+					<th>
+						<a onclick="queryManager('sortBy', 'jobLocation')"> Location </a>
+					</th>
+					<th>
+						<a onclick="queryManager('sortBy', 'website')"> Extracted from </a>
+					</th>
+					<th>
+						<a onclick="queryManager('sortBy', 'deadline')">Closing date</a>
+					</th>
 				</tr>
-			<%}%>
-		</table>
+				<% for(let i =0; i<data.length; i++){%>
+					<tr>
+						<td><%=data[i].jobTitle%></td>
+						<td><%=data[i].companyName%></td>
+						<td><%=data[i].jobLocation%></td>
+						<td>
+							<a href=<%=data[i].website%> target="_blank">
+								<%=data[i].website%>
+							</a>
+						</td>
+						<td><%=(data[i].deadline.getDate()) +"/"+ (data[i].deadline.getMonth()+1) + "/" + data[i].deadline.getFullYear() %></td>
+					</tr>
+				<%}%>
+			</table>
+		</div>
 		<div id="lhs" class="side-margin">
 		</div>
 		<div id="rhs" class="side-margin">

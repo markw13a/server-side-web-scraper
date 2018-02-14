@@ -1,19 +1,25 @@
 var Opportunity = require('../models/opportunity');
 var mongoose = require('mongoose');
 var async = require('async');
+var Fuse = require('fuse.js');
 
 let db;
 let category;
+let searchQuery;
 
 exports.index = function(req, res){
 	db = initDB();
-	category = req.params.sortBy;
+	category = req.query.sortBy;
+	//Not used until filterJobs is called
+	searchQuery = req.query.query;
 	
 	db.once("open", function(){		
 			async.waterfall(
 				[downloadJobs,
+				 filterJobs,
 				 sortResults],
 				function render(err, jobsArray){
+					console.log(jobsArray[0]);
 					res.render('index', {data: jobsArray});
 				}
 			);
@@ -30,13 +36,42 @@ function initDB(){
 };
 
 function downloadJobs(cb){
-	console.log("here");
 	db.db.collection("opportunities", function(err, results){
-		Opportunity.find({}, function exportCollection(err, contents){
-			cb(null, contents);
+		Opportunity.find({}, function exportCollection(err, jobsArray){
+			console.log(jobsArray[0]);
+			cb(null, jobsArray);
 		});
 	});
 };
+
+function filterJobs(jobsArray, cb){
+	let fuseOptions = {
+		caseSensitive: false,
+		threshold: 0.2,
+		tokenize: true,
+		location: 0,
+		distance: 100,
+		maxPatternLength: 1000,
+		minMatchCharLength: 1,
+		keys: [
+		"jobTitle",
+		"salary",
+		"jobLocation",
+		"companyName",
+		"deadline"
+		]
+	};
+	
+	if(searchQuery == undefined){
+		cb(null, jobsArray);
+	}
+	else{
+		let fuse = new Fuse(jobsArray, fuseOptions);
+		let searchResults = fuse.search(searchQuery);
+		
+		cb(null, searchResults);
+	}
+}
 
 function sortResults(jobsArray, cb){
 	sortByCategory(category, jobsArray);
