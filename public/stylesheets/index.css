@@ -1,0 +1,211 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	font-family: Tahoma, sans-serif;
+}
+
+.grid-wrapper{
+	display: grid;
+	grid-template-columns: 1fr 4fr 1fr;
+	grid-template-rows: auto auto auto 80px;
+	grid-template-areas: 
+		"header header header"
+		"img-container img-container img-container"
+		". main-content ."
+		"footer footer footer";
+}
+
+header{
+	grid-area: header;
+	padding: 10px 0;
+}
+
+header li a h3{
+	transition: color 1s ease;
+}
+
+header li a h3:hover{
+	color: #B29A00;
+}
+
+#img-container{
+	grid-area: img-container;
+	
+	text-align: center;
+	background: linear-gradient(
+					to right,
+					rgba(255, 255, 255, 0) 0,
+					rgba(255, 255, 255, 0) 30%,
+					rgba(255, 255, 255, 0.8) 30%,
+					rgba(255, 255, 255, 0.8) 70%,
+					rgba(255, 255, 255, 0)	70%),
+					url("../images/lewis-scene.jpg");
+					
+    background-size: cover;
+    background-repeat: no-repeat;
+	box-shadow: 0 -1px 1px 1px #33354a;
+	min-height: 80vh;
+	width: 100vw;
+}
+
+#img-container > h1{
+	color: #33354a;
+	font-size: 64px;
+	max-width: 400px;
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 40px;
+}
+
+#img-container > p{
+	text-align: left;
+	max-width: 450px;
+	margin: auto;
+	margin-bottom: 60px;	
+}
+
+#img-container > a{
+	position: relative;
+	background-color: #33354a;
+	color: #FECF35;
+	border: 5px solid rgba(0, 0, 0, 0);
+	border-right: 5px solid #2C2E40;
+	border-bottom: 5px solid #2C2E40;
+	border-radius: 5px;
+	
+	text-decoration: none;
+	font-weight: bold;
+	text-align: center;
+	font-size: 24px;
+	padding: 25px;
+}
+
+#img-container > a:hover{
+	border: 5px solid #4A4D6B;
+}
+
+#menu-bar{
+	background-color: #fff;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+#menu-bar li{
+	display: inline-block;
+	margin: auto;
+}
+
+#menu-bar a{
+	text-decoration: none;
+	color: #33354a;
+}
+
+#menu-bar img{
+	width: 150px;
+	height: auto;
+}
+
+#main-content{
+	grid-area: main-content;
+	margin: 40px 0;
+}
+
+#main-content h1{
+	margin: 20px 0;
+}
+
+form{
+	border: 2px solid #33354a;
+	border-radius: 5px;
+	margin: auto;
+	margin-top: 50px;
+	max-width: 500px;
+	background-color: #fafafa;
+}
+
+form h4{
+	text-align: center;
+	display: block;
+	max-width: 200px;
+	margin: 10px auto;
+}
+
+form input, form textarea{
+	display: block;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+form textarea[name='email']{
+	min-width: 300px;
+}
+
+form textarea[name='message']{
+	min-width: 300px;
+	min-height: 200px;
+}
+
+form input[type='submit']{
+	padding: 15px;
+	font-weight: bold;
+	font-size: 15px;
+	
+	background-color: #33354a;
+	color: #FECF35;
+	
+	border: 5px solid rgba(0, 0, 0, 0);
+	border-right: 5px solid #2C2E40;
+	border-bottom: 5px solid #2C2E40;
+	border-radius: 5px;
+}
+
+form input[type='submit']:hover{
+	cursor: pointer;
+	border: 5px solid #4A4D6B;
+}
+
+footer{
+	grid-area: footer;
+	text-align: center;
+	background-color: #33354a;
+}
+
+footer h5{
+	color: #fff;
+	margin-top: 30px;
+	font-weight: normal;
+}
+
+@media screen and (max-width: 1200px){
+	#img-container{
+		background: linear-gradient(
+				to right,
+				rgba(255, 255, 255, 0) 0,
+				rgba(255, 255, 255, 0) 25%,
+				rgba(255, 255, 255, 0.8) 25%,
+				rgba(255, 255, 255, 0.8) 75%,
+				rgba(255, 255, 255, 0)	75%),
+				url("../images/lewis-scene.jpg");
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+}
+
+@media screen and (max-width: 915px){
+	#img-container{
+		background: linear-gradient(
+				to right,
+				rgba(255, 255, 255, 0) 0,
+				rgba(255, 255, 255, 0) 20%,
+				rgba(255, 255, 255, 0.8) 20%,
+				rgba(255, 255, 255, 0.8) 80%,
+				rgba(255, 255, 255, 0)	80%),
+				url("../images/lewis-scene.jpg");
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+}

@@ -1,7 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var opportunitiesController = require('../controllers/opportunitiesController');
+var messageController = require('../controllers/messageController');
 
-router.get('/', opportunitiesController.index);
+router.get('/', function(req, res){
+	res.render('markw13a-index');
+});
+
+router.post('/send-message', messageController.send);
 
 module.exports = router;
