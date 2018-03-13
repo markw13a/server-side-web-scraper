@@ -11,37 +11,49 @@ let gradCrackURL = 'https://www.gradcracker.com/search/engineering-graduate-jobs
 function gradCrackerExtractor(){	
 	let site = this.getURL();
 	let html = this.getHTML();
-
+	
 	let $ = cheerio.load(html);
 	let outArray = [];
-
-	//Find salaries & location
-	$('.list-unstyled.s-list').each(function(i, ele){
-		let jobInfoCard = $(this);
-		let miscInformation = jobInfoCard.find('li > div > div:nth-child(2) > div > div > div > div > div').html();
-		let imageLink = jobInfoCard.find('div > div > div > div > a').attr().href;
-		let jobPageLink = jobInfoCard.find('div > div > div > h2 > a').attr().href;
-		//As Salary, location and closing date are not included within DOM for Gradcracker, forced to use regex to extract this information
-		let salaryRegEx = /Salary:<\/strong>(.*)<br>/;
-		let locationRegEx = /<strong>Location:<\/strong>(.*)<br>/;
-		let deadlineRegEx = /<strong>Closing Date:<\/strong>([\s\S]*?)<\/div>/;
- 
-		let newJobObj = {
-			 jobTitle: null, 
-			 salary: null,
-			 jobLocation: null,
-			 website: null,
-			 deadline: null,
-			 company: null
-		}
-		newJobObj.jobTitle = jobInfoCard.find('h2[class=opportunity-title] > a').html();
-		newJobObj.salary = miscInformation.match(salaryRegEx)[1];
-		newJobObj.jobLocation = miscInformation.match(locationRegEx)[1];
-		newJobObj.website = jobPageLink;
-		newJobObj.deadline = miscInformation.match(deadlineRegEx) ? toDate(miscInformation.match(deadlineRegEx)[1]) : new Date('January 1, 2161');
-		newJobObj.company  = extractCompanyNameFromURL(imageLink);
+	//For each 'company card'. Cards contain list of jobs on offer by company
+	$('.e-result.e-item').each(function(i, ele){
+		let companyCard = $(this);
+		let companyName = extractCompanyNameFromURL(companyCard.find('.row:nth-child(1) > div > div > div > a').attr().href);
+		let numberOfJobsOnCard = companyCard.find('h2[class=opportunity-title]').length;
+		let jobSubArray = new Array(numberOfJobsOnCard);
 		
-		outArray.push(newJobObj);
+		//Process assumes that for every "'h2[class=opportunity-title]'", there is a div containing information on the job. Will break down if this is not true.
+		//Go through divs containing job title
+		companyCard.find('h2[class=opportunity-title]').each(function(i, ele){
+			let newJobObj = {
+				 jobTitle: null, 
+				 salary: null,
+				 jobLocation: null,
+				 website: null,
+				 deadline: null,
+				 company: null
+			};
+			
+			newJobObj.company = companyName;
+			newJobObj.jobTitle = $(this).find('h2[class=opportunity-title] > a').html();
+			newJobObj.website = $(this).find('h2[class=opportunity-title] > a').attr().href;
+			jobSubArray[i] = newJobObj;
+		});
+		
+		//Go through div containing job information, and update previously created jobSubArray entry
+		//This is pretty convoluted, but gradcracker's current (13/03/18) DOM setup makes it quite difficult to do this as one loop
+		companyCard.find('.opp-overview.clearfix').each(function(i, ele){
+			//Maybe makes more sense to instantiate these outside of the loop, but this feels tidier
+			let salaryRegEx = /Salary:<\/strong>(.*)<br>/;
+			let locationRegEx = /<strong>Location:<\/strong>(.*)<br>/;
+			let deadlineRegEx = /<strong>Closing Date:<\/strong>([\s\S]*?)<\/div>/;
+			let miscInformation = $(this).html();
+			
+			jobSubArray[i].salary = miscInformation.match(salaryRegEx)[1];
+			jobSubArray[i].jobLocation = miscInformation.match(locationRegEx)[1];
+			jobSubArray[i].deadline = miscInformation.match(deadlineRegEx) ? toDate(miscInformation.match(deadlineRegEx)[1]) : new Date('January 1, 2161');
+		});
+		
+		outArray = outArray.concat(jobSubArray);
 	});
 
 	return(outArray);
@@ -83,7 +95,7 @@ function toDate(date){
 };
 
 module.exports.scrape = function(siteObjects){
-	for(let i =1; i <= 14; i++){
+	for(let i =1; i <= 1; i++){
 		let newSite = new Site(gradCrackURL + "?page=" + i);
 		newSite.setExtractRelevantInfo(gradCrackerExtractor);
 		siteObjects.push(newSite);
