@@ -95,7 +95,7 @@ function toDate(date){
 };
 
 module.exports.scrape = function(siteObjects){
-	for(let i =1; i <= 1; i++){
+	for(let i =1; i <= 11; i++){
 		let newSite = new Site(gradCrackURL + "?page=" + i);
 		newSite.setExtractRelevantInfo(gradCrackerExtractor);
 		siteObjects.push(newSite);
