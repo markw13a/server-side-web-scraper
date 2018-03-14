@@ -51,6 +51,9 @@
 						<a onclick="queryManager('sortBy', 'jobLocation')"> Location </a>
 					</th>
 					<th>
+						<a onclick="queryManager('sortBy', 'salary')"> Salary </a>
+					</th>
+					<th>
 						<a onclick="queryManager('sortBy', 'website')"> Extracted from </a>
 					</th>
 					<th>
@@ -60,8 +63,9 @@
 				<% for(let i =0; i<data.length; i++){%>
 					<tr>
 						<td><%=data[i].jobTitle%></td>
-						<td><%=data[i].companyName%></td>
+						<td><%=data[i].companyName%></td>					
 						<td><%=data[i].jobLocation%></td>
+						<td><%=data[i].salary%></td>	
 						<td>
 							<a href=<%=data[i].website%> target="_blank">
 								<%=data[i].website%>
