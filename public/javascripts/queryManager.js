@@ -13,7 +13,7 @@ function queryManager(queryParameter, value){
 		regEx = new RegExp(queryParameter+"(=.*)(?=\\&)|" + queryParameter + "(=.*)");
 		window.location.href = currentURL.replace(regEx, queryParameter+"="+value);
 	}
-	else if(currentURL.includes("/?")){
+	else if(currentURL.includes("/jobs?")){
 		window.location.href = currentURL + "&" + queryParameter + "=" + value;
 	}
 	else{

@@ -5,6 +5,15 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="/javascripts/queryManager.js"></script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115765936-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-115765936-1');
+	</script>
   </head>
 	 <body class="grid-wrapper">
 		<header>
@@ -26,7 +35,7 @@
 			</p>
 		</div>
 		<div id="main-content">
-			<form action="/" method="get">
+			<form action="/jobs" method="get">
 				<input type="text" name="query">
 				<input type="submit" value="Search">
 			</form>
@@ -42,6 +51,9 @@
 						<a onclick="queryManager('sortBy', 'jobLocation')"> Location </a>
 					</th>
 					<th>
+						<a onclick="queryManager('sortBy', 'salary')"> Salary </a>
+					</th>
+					<th>
 						<a onclick="queryManager('sortBy', 'website')"> Extracted from </a>
 					</th>
 					<th>
@@ -51,8 +63,9 @@
 				<% for(let i =0; i<data.length; i++){%>
 					<tr>
 						<td><%=data[i].jobTitle%></td>
-						<td><%=data[i].companyName%></td>
+						<td><%=data[i].companyName%></td>					
 						<td><%=data[i].jobLocation%></td>
+						<td><%=data[i].salary%></td>	
 						<td>
 							<a href=<%=data[i].website%> target="_blank">
 								<%=data[i].website%>
