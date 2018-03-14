@@ -13,7 +13,6 @@ function gradCrackerExtractor(){
 	let html = this.getHTML();
 	
 	let $ = cheerio.load(html, {decodeEntities: false});
-	console.log($.html());
 	let outArray = [];
 	//For each 'company card'. Cards contain list of jobs on offer by company
 	$('.e-result.e-item').each(function(i, ele){
