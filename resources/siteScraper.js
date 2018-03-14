@@ -6,6 +6,7 @@ var Company = require('../models/company');
 var mongoose = require('mongoose');
 var Fuse = require('fuse.js');
 var events = require('events');
+var iconv = require('iconv-lite'); //Used to avoid character encoding issues. Found that pound symbols were coming through garbled.
 
 //Need to know when initDB has completed execution. Would rather not have to handle event generation manually if at all possible
 var eventEmitter = new events.EventEmitter();
@@ -92,15 +93,15 @@ function initDB(){
 function extractHTML(callback){
 	let site = siteObjects.pop();
 	
-	request(site.getURL(), function(err, res, html) {
-		site.setHTML(html);
+	request({url: site.getURL(), encoding: null}, function(err, res, html) {
+		site.setHTML(iconv.decode(html, 'utf8'));
 		callback(null, site);
 	});
 };
 
 function extractJobListings(site, callback){
 	let jobObjectArray = site.extractRelevantInfo();
-
+	
 	if(jobObjectArray.length <= 0){
 		//Only want to end current loop, throwing an error would mean no subsequent sites are processed.
 		return console.log("No valid job listings found for site: "+ site.getURL());
