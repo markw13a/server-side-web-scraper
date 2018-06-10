@@ -3,9 +3,12 @@
 //Could we use a promise object to eliminate the need for an event emitter?
 var gradCraker = require('./gradCrackerPage');
 var runJobSearch = require('./siteScraper');
+const edinburgh = require('./edinburghCareersPage');
 
 let siteObjects = [];
 
-gradCraker.scrape(siteObjects);
+edinburgh.scrape(siteObjects);
+// gradCraker.scrape(siteObjects);
+
 
 runJobSearch(siteObjects);

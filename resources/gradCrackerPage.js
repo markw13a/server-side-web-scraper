@@ -13,7 +13,6 @@ function gradCrackerExtractor(){
 	let html = this.getHTML();
 	
 	let $ = cheerio.load(html, {decodeEntities: false});
-	console.log($.html());
 	let outArray = [];
 	//For each 'company card'. Cards contain list of jobs on offer by company
 	$('.e-result.e-item').each(function(i, ele){
@@ -56,7 +55,6 @@ function gradCrackerExtractor(){
 		
 		outArray = outArray.concat(jobSubArray);
 	});
-
 	return(outArray);
 };
 //Name of company is not directly listed for Gradcracker job postings: images are used instead. I still need the company's name for a later database query, and it turns out that the only reference to the the company's name on the entire job posting is as an argument to an internal link.

@@ -1,2 +1,3 @@
-
 controllers/messageController.js
+node_modules/*
+resources/credentials.js

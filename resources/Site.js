@@ -17,7 +17,7 @@ var Site = function(siteURL){
 		html = contents;
 	};
 }
-
+Site.prototype.extractHTML;
 Site.prototype.extractRelevantInfo;
 
 //User needs to provide criteria for scraping a given site's HTML.

@@ -138,10 +138,10 @@ function salaryComparison(a, b){
 	
 	//Simple comparison might not be the most sensible for this (salaries gives are often a mix of text and numbers), but it'll do for the moment.
 	if(salaryA < salaryB){
-		return -1;
+		return 1;
 	}
 	else{
-		return 1;
+		return -1;
 	}
 }
 
