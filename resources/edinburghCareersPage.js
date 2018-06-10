@@ -20,7 +20,7 @@ async function extractInfo() {
 	
 	await login({page});
 	await page.waitFor(2000);
-	await page.goto('https://mycareerhub.ed.ac.uk/students/jobs/search?page=1&take=10');
+	await page.goto('https://mycareerhub.ed.ac.uk/students/jobs/search?page=1&take=10000');
 	const jobArray = await page.evaluate(retrieveJobInfoFromPage);
 	//Deadline needs to be returned from browser context as JSON. Convert into a Date object here
 	jobArray.deadline = new Date(jobArray.deadline);
@@ -38,7 +38,7 @@ async function extractHTML() {
 	const page = await browser.newPage();
 	await login({page});
 	await page.waitFor(2000);
-	await page.goto('https://mycareerhub.ed.ac.uk/students/jobs/search?page=1&take=10');
+	await page.goto('https://mycareerhub.ed.ac.uk/students/jobs/search?page=1&take=10000');
 	const contents = await page.$eval('html', e => e.outerHTML);
 	await browser.close();
 	return contents;
