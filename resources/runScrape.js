@@ -4,10 +4,12 @@
 var gradCraker = require('./gradCrackerPage');
 var runJobSearch = require('./siteScraper');
 const edinburgh = require('./edinburghCareersPage');
+const prospects = require('./prospects');
 
 let siteObjects = [];
 
-edinburgh.scrape(siteObjects);
+// edinburgh.scrape(siteObjects);
+prospects.scrape(siteObjects);
 // gradCraker.scrape(siteObjects);
 
 

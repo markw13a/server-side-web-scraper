@@ -20,8 +20,10 @@ var fuseOptions = {
 		threshold: 0.01,
 		location: 0,
 		distance: 100,
-		maxPatternLength: 32,
+		maxPatternLength: 128,
 		minMatchCharLength: 1,
+		tokenize: true,
+		matchAllTokens: true,
 		keys: [
 		"name"
 		]
@@ -132,7 +134,7 @@ async function pushToDatabase(jobObjectArray){
 		else{
 			let companyData = searchResult[0].item;
 			console.log(jobObject.company + " has been matched to " + companyData.name);
-			console.warn(jobObject);
+			// console.warn(jobObject);
 			newJob = {
 					jobTitle: jobObject.jobTitle,
 					salary:	jobObject.salary,
