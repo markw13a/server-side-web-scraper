@@ -2,7 +2,7 @@ var request = require('request');
 var Site = require('./Site');
 var Opportunity = require('../models/opportunity');
 var Company = require('../models/company');
-const C = require('./credentials');
+const credentials = require('./credentials');
 const {MongoClient, Server} = require('mongodb');
 var Fuse = require('fuse.js');
 var events = require('events');
@@ -59,7 +59,7 @@ module.exports = runJobSearch;
 //Need to have local JSON copy of Company database saved locally in order to run fuzzy matches using fuse.
 //Downloading ~30,000 entries isn't instantaneous, so it'd be best if this only needs to be done once.
 async function initDB(){
-	const mongodbString = `mongodb://${C.Mongo.login}:${C.Mongo.password}@ds247047.mlab.com:47047/visadb`;
+	const mongodbString = `mongodb://${credentials.Mongo.login}:${credentials.Mongo.password}@ds247047.mlab.com:47047/visadb`;
 	db = await MongoClient.connect(mongodbString);
 	visadb = await db.db('visadb');
 	const companies = visadb.collection('companies').find({});

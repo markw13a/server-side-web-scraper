@@ -5,7 +5,7 @@ var Cookie = require('request-cookies');
 var async  = require('async');
 const puppeteer = require("puppeteer");
 var Site = require("./Site");
-const C = require("./credentials");
+const credentials = require("./credentials");
 
 //Puppeteer options, for debugging
 const options = {
@@ -50,9 +50,9 @@ async function login({page}) {
 	await page.waitForSelector('#login');
 	
 	await page.click('#login');
-	await page.keyboard.type(C.Edinburgh.login);
+	await page.keyboard.type(credentials.Edinburgh.login);
 	await page.click('#password');
-	await page.keyboard.type(C.Edinburgh.password);
+	await page.keyboard.type(credentials.Edinburgh.password);
 	await page.click('#contentArea > div > div.infoItem.wide.hi > form > div:nth-child(3) > input[type="submit"]:nth-child(1)');
 }
 

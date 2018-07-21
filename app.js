@@ -7,17 +7,10 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var jobs = require('./routes/jobs');
-const C = require("./resources/credentials");
+const credentials = require("./resources/credentials");
 const {MongoClient} = require('mongodb');
 
 var app = express();
-
-//Establish connection to mongodb
-var mongodb = `mongodb://${C.Mongo.login}:${C.Mongo.password}@ds247047.mlab.com:47047/visadb`;
-// mongoose.connect(mongodb, {useMongoClient: true});
-// mongoose.Promise = global.Promise;
-// var db = mongoose.connection;
-const db = MongoClient.connect(mongodb);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +22,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', jobs);
