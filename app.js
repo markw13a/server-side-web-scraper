@@ -4,18 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
 
 var index = require('./routes/index');
 var jobs = require('./routes/jobs');
+const C = require("./resources/credentials");
+const {MongoClient} = require('mongodb');
 
 var app = express();
 
 //Establish connection to mongodb
-var mongodb = 'mongodb://admin:admin1453@ds247047.mlab.com:47047/visadb';
-mongoose.connect(mongodb, {useMongoClient: true});
-mongoose.Promise = global.Promise;
-var db = mongoose.connection;
+var mongodb = `mongodb://${C.Mongo.login}:${C.Mongo.password}@ds247047.mlab.com:47047/visadb`;
+// mongoose.connect(mongodb, {useMongoClient: true});
+// mongoose.Promise = global.Promise;
+// var db = mongoose.connection;
+const db = MongoClient.connect(mongodb);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

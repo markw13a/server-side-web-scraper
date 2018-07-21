@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var messageController = require('../controllers/messageController');
+const express = require('express');
+const messageController = require('../controllers/messageController');
+
+const router = express.Router();
 
 router.get('/', function(req, res){
 	res.render('markw13a-index');
