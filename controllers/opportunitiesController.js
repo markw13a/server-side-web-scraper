@@ -2,6 +2,7 @@ var Opportunity = require('../models/opportunity');
 var mongoose = require('mongoose');
 var async = require('async');
 var Fuse = require('fuse.js');
+import credentials from '../resources/credentials';
 
 let db;
 let category;
@@ -27,7 +28,7 @@ exports.index = function(req, res){
 };
 
 function initDB(){
-	var mongodb = 'mongodb://admin:admin1453@ds247047.mlab.com:47047/visadb';
+	var mongodb = `mongodb://${credentials.Mongo.login}:${credentials.Mongo.password}@ds247047.mlab.com:47047/visadb`;
 	mongoose.connect(mongodb, {useMongoClient: true});
 	mongoose.Promise = global.Promise;
 	var db = mongoose.connection;

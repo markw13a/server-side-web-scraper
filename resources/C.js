@@ -8,14 +8,17 @@ const initDB = () => {
     return db;
 };
 
-/**Download all jobs from DB */
-const downloadJobs = ({db}) => {
-    return db.db('visadb')
-            .collection('opportunities')
-            .find({});
+/**Download all records from given collection.
+ * Note: Returns MongoDB Object. Need to do output.toArray() to access data 
+ * @param dbObj MongoDb Object as returned from initDB
+ * @param dbName Name of DB you wish to query
+ * @param collection Name of collection 
+*/
+const fetchFromDB = ({db, dbName, collection, query={}}) => {
+    return db.db(dbName).collection(collection).find(query);
 };
 
 module.exports = {
     initDB,
-    downloadJobs
+    fetchFromDB
 };

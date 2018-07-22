@@ -14,7 +14,7 @@ body {
 .grid-wrapper{
 	display: grid;
 	grid-template-columns: 1fr 6fr 1fr;
-	grid-template-rows: 70px auto auto 100px;
+	grid-template-rows: 100px auto auto 100px;
 	grid-template-areas:
 		". header ."
 		"lhs blurb rhs"
@@ -37,11 +37,11 @@ header > a, img{
 Issue is with left and right margins automatically collapsing as the screen is resized. Using a margin for the logo therefore gave inconsistent results.
 Another option would be to use jQuery to set margin by the size of the lhs, but that seems needlessly complicated.
 */
-header > #black-background{
+header #black-background{
 	position: absolute;
 	top: 0;
 	left: 0;
-	height: 70px;
+	height: 100px;
 	width: 100vw;
 	background-color:#000;
 	overflow: visible;
@@ -100,10 +100,12 @@ th:hover{
 	grid-area: rhs;
 }
 
-footer{
+#footer{
 	grid-area: footer;
+	color: #fff;
 	background-color: #000;
 	margin-top: 30px;
+	text-align: center;
 }
 
 a {
