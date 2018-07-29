@@ -16,17 +16,31 @@ const updateQueryParam = (queryParameter, value) => {
 	}
 }
 
+/**
+ * Shamelessly stolen 
+ */
+function getUrlParameter(url, param) {
+    param = param.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + param + '=([^&#]*)');
+    var results = regex.exec(url);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+
+/**
+ * Performs an in-place sort by category
+ * Not too keen on inplace sorts. Look to change this 
+ */
 function sortByCategory(category, array){
 	switch(category){
 		case "jobTitle":
 			array.sort(titleComparison);
 			break;
 			
-		case "companyName":
+		case "company":
 			array.sort(companyComparison);
 			break;
 			
-		case "jobLocation":
+		case "location":
 			array.sort(locationComparison);
 			break;
 			
@@ -121,6 +135,7 @@ function deadlineComparison(a, b){
 
 
 module.exports = {
-    updateQueryParam,
+	updateQueryParam,
+	getUrlParameter,
     sortByCategory
 };

@@ -41,6 +41,5 @@ module.exports.scrape = function(siteObjects) {
     let newSite = new Site(apiEndpoint);
     newSite.setExtractRelevantInfo(extractor);
     newSite.extractHTML = () => '';
-    siteObjects.push(newSite);
-    return siteObjects;
+    return newSite;
 }

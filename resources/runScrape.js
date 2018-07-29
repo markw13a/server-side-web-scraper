@@ -8,9 +8,12 @@ const prospects = require('./prospects');
 
 let siteObjects = [];
 
-// edinburgh.scrape(siteObjects);
-prospects.scrape(siteObjects);
+const edinburghSite = edinburgh.scrape(siteObjects);
+const prospectsSite = prospects.scrape(siteObjects);
 // gradCraker.scrape(siteObjects);
+siteObjects = siteObjects.concat(edinburghSite);
+// siteObjects = siteObjects.concat(prospectsSite);
 
+console.warn(siteObjects);
 
 runJobSearch(siteObjects);

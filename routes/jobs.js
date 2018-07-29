@@ -7,7 +7,7 @@ import {JobListings} from '../src/client/components/JobListings';
 
 const router = express.Router();
 
-router.get('/', opportunitiesController.index);
+router.get('/', (req, res) => res.render('react-index'));//opportunitiesController.index);
 
 //Issue with render interpreting markup as name of file in views directory
 router.get('/react-test', (req, res) => {

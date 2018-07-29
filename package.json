@@ -2,8 +2,9 @@
   "name": "practiceapp",
   "version": "0.0.0",
   "scripts": {
-    "start": "nodemon --exec babel-node ./bin/www",
-    "webpack": "./node_modules/.bin/webpack -w"
+    "start": "webpack && babel-node ./bin/www",
+    "webpack": "./node_modules/.bin/webpack",
+    "webpack-watch": "./node_modules/.bin/webpack -w"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",

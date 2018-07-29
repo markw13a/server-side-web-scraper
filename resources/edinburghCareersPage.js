@@ -93,6 +93,6 @@ module.exports.scrape = (siteObjects) => {
 	const newSite = new Site('https://mycareerhub.ed.ac.uk');
 	newSite.setExtractRelevantInfo(extractInfo);
 	newSite.extractHTML = () => '';//Actually never used. Only purpose is to avoid siteScraper making a pointless AJAX call to the career's site
-	return siteObjects.push(newSite);
+	return newSite;
 }
 	
