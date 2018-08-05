@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     updateQueryParam, 
+    updateQueryParamMulti,
     getUrlParameter,
     sortByCategory
 } from '../C';
@@ -9,40 +10,52 @@ class JobListings extends React.Component {
     constructor(props){
         super(props);
 
+        const resultsPerPage = getUrlParameter(location.search, "resultsPerPage") || 50;
+        const page = getUrlParameter(location.search, "page") || 0;
+
         const data = {
-            value: fetch("/data/opportunities"),
+            // generalise updateQueryParam to be able to construct urls?
+            value: fetch(`/data/opportunities?resultsPerPage=${resultsPerPage}&page=${page}`),
             ready: false
         }
 
         this.state = {
             data,
             params: {
-                sortBy: getUrlParameter(location.search, "sortBy")
+                collectionSize: null,
+                sortBy: getUrlParameter(location.search, "sortBy"),
+                resultsPerPage,
+                page
             }
         };
     }
     componentDidMount(){
-        const {data, params} = this.state;
-        const {sortBy} = params;
+        const {data} = this.state;
+
         //Set flag to show asynchronous data is ready for use.
         //Doesn't seem to be a nicer way to handle this. Tolerable for now.
         data.value
         .then(results => results.json())
         .then(value => {
-            this.setState({data: {value, ready: true}});
+            this.setState({
+                data: {value: value.data, ready: true},
+                params: Object.assign(this.state.params, {collectionSize: value.collectionSize})
+            });
         });
     }
     render() {
         const {data, params} = this.state;
-        const {sortBy} = params;
+        const {sortBy, resultsPerPage} = params;
 
         if(!data.ready) return <h1>Loading</h1>;
         sortByCategory(sortBy, data.value);
 
         return (
             <div>
-                <SearchBox />
+                {/* <SearchBox /> */}
+                <PageControls resultsPerPage={resultsPerPage} master={this} />
                 <JobList data={data.value} master={this} />
+                <PageSelector params={params} />
             </div>
         );
     }
@@ -92,10 +105,59 @@ const JobList = ({data, master}) => {
 
 const SearchBox = () => {
     return(
-        <form action="/jobs" method="get">
+        <form action="/" method="get">
             <input type="text" name="query" />
             <input type="submit" value="Search" />
         </form>
+    );
+};
+
+const PageControls = ({resultsPerPage, master}) => {
+    const options = ["25", "50", "100", "200"];
+
+    // as pagination only takes effect when pulling from db
+    // need to trigger a page render with this
+    const onChange = v => {
+        window.location.href = updateQueryParamMulti({
+            "resultsPerPage" : v.target.value,
+            "page" : 0
+        });
+        // side-effect: reset page to 0
+        // master.setState({params: Object.assign(master.state.params, {"resultsPerPage": v.target.value, page: 0})});
+    }
+
+    return (
+        <div>
+            <select className="pull-right" name="Results per page" onChange={onChange} id="resultsPerPage" >
+                {options.map( v =>
+                    <option key={v} selected={v == resultsPerPage}> 
+                        {v} 
+                    </option>
+                )}
+            </select>
+            <span className="pull-right">Results per page</span>
+        </div>
+    );
+};
+
+const PageSelector = ({params}) => {
+    const {page, collectionSize, resultsPerPage} = params;
+    const numberOfPages = Math.ceil(collectionSize / resultsPerPage);
+    const arr = Array.from({length: numberOfPages}, (e, i) => i);
+    console.warn([numberOfPages, arr]);
+    // feels ham-fisted, but without onclick href would be determined on render
+    // user may have changed url in other ways since that time.
+    const onClick = (i) => {
+        window.location.href = updateQueryParam("page", i);
+    }
+
+    return (
+        <div className="center">
+            <span>Results Page: </span>
+            {
+                arr.map((e) => <a className={"large-text " + (e == page ? "bold underline" : "") } onClick={() => onClick(e)}> {e + 1} </a>)
+            }
+        </div>
     );
 };
 

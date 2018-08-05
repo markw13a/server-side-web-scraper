@@ -1,13 +1,13 @@
 //Transfers contents of an Excel spreadsheet to an online database.
 //I don't anticipate running this script more than a handful of times, so I haven't bothered making it presentable/efficient
-
 var Company = require('../models/company');
 var async = require('async');
 var mongoose = require('mongoose');
 var xlsx = require('js-xlsx');
+const credentials = require('../resources/credentials');
 
 //Establish connection to mongodb
-var mongodb = 'mongodb://admin:admin1453@ds247047.mlab.com:47047/visadb';
+var mongodb = `mongodb://${credentials.Mongo.login}:${credentials.Mongo.password}@ds247047.mlab.com:47047/visadb`;
 mongoose.connect(mongodb, {useMongoClient: true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;

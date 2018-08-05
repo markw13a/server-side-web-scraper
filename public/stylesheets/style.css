@@ -112,6 +112,30 @@ a {
   color: #00B7FF;
 }
 
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
+}
+
+.center {
+	text-align: center;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.large-text {
+	font-size: 16px;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
 @media screen and (max-width: 500px){
 	td{
 		height: 150px;

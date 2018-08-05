@@ -1,6 +1,5 @@
-const updateQueryParam = (queryParameter, value) => {
-	let currentURL = window.location.href;
-    
+const updateQueryParam = (queryParameter, value, currentURL=window.location.href) => {
+
     //Argument already present in URL
 	if(currentURL.includes(queryParameter)){
 		const regEx = new RegExp(queryParameter+"(=.*)(?=\\&)|" + queryParameter + "(=.*)");
@@ -15,6 +14,21 @@ const updateQueryParam = (queryParameter, value) => {
 		return currentURL + "?" + queryParameter + "=" + value;
 	}
 }
+
+/**
+ * Wrapper for above. Consider this a lazy solution -- good enough for now
+ *  @param obj {param: value}
+ */
+const updateQueryParamMulti = (obj) => {
+	const params = Object.keys(obj);
+	let currentURL = window.location.href;
+
+	params.forEach(e => {
+		currentURL = updateQueryParam(e, obj[e], currentURL);
+	});
+
+	return currentURL;
+};
 
 /**
  * Shamelessly stolen 
@@ -136,6 +150,7 @@ function deadlineComparison(a, b){
 
 module.exports = {
 	updateQueryParam,
+	updateQueryParamMulti,
 	getUrlParameter,
     sortByCategory
 };
