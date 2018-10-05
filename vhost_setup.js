@@ -8,7 +8,7 @@ var express = require('express');
 var path = require('path');
 const vhost = require('vhost');
 const markw13aApp = require('./markw13a.co.uk/app.js');
-const unofficialTranslationApp = require('./unofficaltranslations.com/app.js');
+const unofficialTranslationApp = require('./unofficialtranslations.com/app.js');
 
 var app = express();
 
