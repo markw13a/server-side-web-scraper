@@ -46,4 +46,50 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+// Apache is used is a reverse proxy
+// Have two separate apps set up on different ports
+// Apache serves appropriate content based on host name provided
+// app.listen(3000);
+process.env.jobSitePort = 3000;
+
+const unofficialtranslations = express();
+
+// view engine setup
+unofficialtranslations.set('views', path.join(__dirname, 'unofficialtranslations.com', 'views'));
+unofficialtranslations.set('view engine', 'ejs');
+
+// uncomment after placing your favicon in /public
+// unofficialtranslations.use(favicon(path.join(__dirname, 'unofficialtranslations.com', 'public', 'favicon.ico')));
+unofficialtranslations.use(logger('dev'));
+unofficialtranslations.use(bodyParser.json());
+unofficialtranslations.use(bodyParser.urlencoded({ extended: false }));
+unofficialtranslations.use(cookieParser());
+unofficialtranslations.use(express.static(path.join(__dirname,'unofficialtranslations.com', 'build')));
+unofficialtranslations.use(express.static(path.join(__dirname,'unofficialtranslations.com', 'public')));
+
+// app.use('/', jobs);
+// app.use('/jobs', jobs);
+// app.use('/data', data);
+
+// catch 404 and forward to error handler
+unofficialtranslations.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handler
+unofficialtranslations.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+// unofficialtranslations.listen(4000);
+process.env.unofficialtranslationsPort = 4000;
+
+module.exports = {app, unofficialtranslations};

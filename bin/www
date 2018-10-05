@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+const {app, unofficialtranslations} = require('../app');
 var debug = require('debug')('practiceapp:server');
 var http = require('http');
 
@@ -10,8 +10,8 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '8888');
-app.set('port', port);
+const jobSitePort = process.env.jobSitePort; 
+app.set('port', jobSitePort);
 
 /**
  * Create HTTP server.
@@ -23,9 +23,19 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
+server.listen(jobSitePort);
+server.on('error', error => onError(error, jobSitePort));
 server.on('listening', onListening);
+
+// For second site hosted on server
+const unofficialtranslationsPort = process.env.unofficialtranslationsPort; 
+unofficialtranslations.set('port', unofficialtranslationsPort);
+
+var unofficialtranslationsServer = http.createServer(unofficialtranslations);
+
+unofficialtranslationsServer.listen(unofficialtranslationsPort);
+unofficialtranslationsServer.on('error', error => onError(error, unofficialtranslationsPort));
+unofficialtranslationsServer.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -51,7 +61,7 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error, port) {
   if (error.syscall !== 'listen') {
     throw error;
   }
