@@ -35,7 +35,7 @@ async function runJobSearch(sitesToScrape){
 	//Really don't like having to put siteObjects in the global scope, but I'm not sure how else to get arguments to the waterfall functions. Bit of a nuisance.
 	siteObjects = sitesToScrape;
 	await initDB();
-	for(site of siteObjects) {
+	for(let i = 0; i < siteObjects.length; i++) {
 		const site = await extractHTML();
 		const jobObjectArray = await extractJobListings(site);
 		await pushToDatabase(jobObjectArray);
@@ -98,10 +98,13 @@ async function extractHTML(){
 		return site;
 	}
 	else{
-		await request({url: site.getURL(), encoding: null}, function(err, res, html) {
-			site.setHTML(iconv.decode(html, 'utf8'));
-			return site;
-		});
+		// wrap in promise so that await can be used
+		return new Promise( (resolve, reject) => {
+				request({url: site.getURL(), encoding: null}, function(err, res, html) {
+					site.setHTML(iconv.decode(html, 'utf8'));
+					resolve(site);
+				})
+			});
 	}
 };
 
@@ -129,7 +132,7 @@ async function pushToDatabase(jobObjectArray){
 		let searchResult = fuse.search(jobObject.company);
 		if(searchResult.length == 0){
 			//return console.log("Company '" + jobObject.company + "' not found in visadb");
-			return new Error("Company '" + jobObject.company + "' not found in visadb");
+			return console.warn("Company '" + jobObject.company + "' not found in visadb");
 		} 
 		else{
 			let companyData = searchResult[0].item;
