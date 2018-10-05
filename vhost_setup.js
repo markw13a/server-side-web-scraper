@@ -7,13 +7,15 @@
 var express = require('express');
 var path = require('path');
 const vhost = require('vhost');
+const markw13aApp = require('./markw13a.co.uk/app.js');
+const unofficialTranslationApp = require('./unofficaltranslations.com/app.js');
 
 var app = express();
 
-const createVHost = (domainName, dirPath) => vhost(domainName, express.static(dirPath));
+const createVHost = (domainName, app) => vhost(domainName, app);
 
-const jobSite = createVHost('markw13a.co.uk', path.join(__dirname, 'markw13a.co.uk', 'app.js'));
-const unofficialTranslationHost = createVHost('unofficialtranslations.com', path.join(__dirname, 'unofficialtranslations.com', 'apps.js'));
+const jobSite = createVHost('markw13a.co.uk', markw13aApp);
+const unofficialTranslationHost = createVHost('unofficialtranslations.com', unofficialTranslationApp);
 app
  .use(unofficialTranslationHost)
  .use(jobSite);
