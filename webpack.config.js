@@ -1,16 +1,14 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const BUILD_DIR = path.resolve(__dirname, './markw13a.co.uk/build');
-const APP_DIR = path.resolve(__dirname, './markw13a.co.uk/src/client');
-
 const config = {
     entry: {
-        main: APP_DIR + '/index.js'
+        'markw13a.co.uk/build/bundle': './markw13a.co.uk/src/client',
+        'unofficialtranslations.com/build/bundle':  './unofficialtranslations.com/src/client'
     },
     output: {
-        filename: 'bundle.js',
-        path: BUILD_DIR
+        filename: '[name].js',
+        path: __dirname
     },
     module: {
         rules: [
@@ -25,7 +23,10 @@ const config = {
               }]            
             }
            ]
-    }
+    },
+    resolve: {
+        extensions: ['.js', '.jsx'],
+      }
 };
 
 
