@@ -5,24 +5,31 @@ const router = express.Router();
 const adminPassword = credentials.rest.password;
 
 // form for creating new article
-router.get('/create-new', (req, res) => {
-	res.render('rest-submit');
+router.get('/', (req, res) => {
+	res.render('react-index');
 });
 
 // retrieve  item from back-end
-router.get('/', (req, res) => {
+router.get('/create', (req, res) => {
     console.warn("GET", req);
 });
 
 // write item to back-end if correct password provided
-router.post('/', (req, res) => {
-    const {password} = req.body;
-
+router.post('/create', (req, res) => {
+    const {
+        password,
+        link, 
+        targetLanguageText, 
+        targetLanguageTitle,
+        sourceLanguageText,
+        sourceLanguageTitle,
+        endpointTitle
+    } = req.body;
+    console.warn(req);
     // {
     //     endpoint-title: "",
-    //     content : {
-    //         [{language: "en", text: "...", title: "..."}, {language: "es", text: "...", title: "..."}]
-    //     },
+    //     target-language: {language: "en", title: "...", text: "..."}
+    //     source-language: {language: "es", title: "...", text: "..."}
     //     link: "..." // link to original text
     // }
 

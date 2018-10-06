@@ -5,7 +5,7 @@ import NewArticle from './components/NewArticle';
 import ErrorPage from './components/ErrorPage';
 
 const pages = {
-    '/rest/create-new': NewArticle
+    '/rest': NewArticle
 }
 
 class Main extends React.Component {
