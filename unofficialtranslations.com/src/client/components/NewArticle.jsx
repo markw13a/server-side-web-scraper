@@ -6,6 +6,8 @@ class NewArticle extends React.Component {
     }
 
     render() {
+        const ISODate = new Date().toISOString();
+
         return (
             <form action="/rest/create" method="post">
                 <div>
@@ -35,7 +37,11 @@ class NewArticle extends React.Component {
                 <div>
                     <label for="password">Admin password: </label>
                     <input type="text" id="password" name="password" />
-                </div>            
+                </div>         
+                <div>
+                    <label for="date">Date created: </label>
+                    <input type="text" id="date" name="date" value={ISODate} />
+                </div>     
                 <div class="button">
                     <button type="submit">Submit</button>
                 </div>

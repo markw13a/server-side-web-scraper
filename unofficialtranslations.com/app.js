@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 const rest = require('./routes/rest');
+const {initDB} = require('./resources/C');
 
 var app = express();
 // view engine setup
@@ -40,5 +41,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// initialise db object
+initDB();
 
 module.exports = app;
