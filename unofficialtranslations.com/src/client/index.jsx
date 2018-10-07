@@ -2,10 +2,14 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import NewArticle from './components/NewArticle';
+import DeletePage from './components/DeletePage';
+import IndexPage from './components/IndexPage';
 import ErrorPage from './components/ErrorPage';
 
 const pages = {
-    '/rest': NewArticle
+    '/': IndexPage,
+    '/rest/delete': DeletePage,
+    '/rest/create': NewArticle
 }
 
 class Main extends React.Component {
@@ -24,7 +28,7 @@ class Main extends React.Component {
     render() {
         const {pathname} = this.state;
         const Page = pages[pathname] || ErrorPage;
-        console.warn(pathname, Page);
+
         return <Page />;
     };
 }

@@ -5,11 +5,6 @@ const {getDB} = require('../resources/C');
 const router = express.Router();
 const adminPassword = credentials.rest.password;
 
-// form for creating new article
-router.get('/', (req, res) => {
-	res.render('react-index');
-});
-
 // retrieve  item from back-end
 router.get('/get*', (req, res) => {
     const pathname = req._parsedOriginalUrl.pathname || '';
@@ -28,6 +23,11 @@ router.get('/get*', (req, res) => {
     }) // need to convert MongoDB object to array
     .then( results => results.toArray())
     .then( data => res.json({data}));
+});
+
+// form for creating new article
+router.get('/create', (req, res) => {
+	res.render('react-index');
 });
 
 // write item to back-end if correct password provided
@@ -59,6 +59,31 @@ router.post('/create', (req, res) => {
     
     // Success. Link to new asset's endpoint
     res.send('Item successfully created');
+});
+
+// form for deleting article
+router.get('/delete*', (req, res) => {
+	res.render('react-index');
+});
+
+router.post('/delete*', (req, res) => {
+    const {password, articleID} = req.body;
+    console.warn(articleID);
+    // db could still be a promise at this stage.
+    const db = getDB();
+
+    if(password !== adminPassword) res.send('Incorrect Password. Item not deleted')
+
+    db.then( v => {
+        const collection  = v.db("translation").collection("articles");
+        
+        if(articleID) {
+            collection.remove({'endpointTitle': articleID}, {justOne: true});
+            res.send('Item deleted.');
+            return;
+        }
+        res.send('No valid article ID provided. No action taken.');
+    });
 });
 
 module.exports = router;

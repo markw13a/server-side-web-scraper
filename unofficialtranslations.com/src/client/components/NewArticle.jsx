@@ -31,17 +31,25 @@ class NewArticle extends React.Component {
                     <textarea id="targetLanguageText" name="targetLanguageText" />
                 </div>
                 <div>
+                    <label for="blurb">Blurb for main page: </label>
+                    <textarea id="blurb" name="blurb" />
+                </div>
+                <div>
                     <label for="link">Link to original article: </label>
                     <input type="text" id="link" name="link" />
                 </div>
                 <div>
-                    <label for="password">Admin password: </label>
-                    <input type="text" id="password" name="password" />
-                </div>         
+                    <label for="image">Image link: </label>
+                    <input type="text" id="image" name="image" />
+                </div>           
                 <div>
                     <label for="date">Date created: </label>
                     <input type="text" id="date" name="date" value={ISODate} />
-                </div>     
+                </div>    
+                <div>
+                    <label for="password">Admin password: </label>
+                    <input type="text" id="password" name="password" />
+                </div>   
                 <div class="button">
                     <button type="submit">Submit</button>
                 </div>

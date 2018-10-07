@@ -5,8 +5,8 @@ import {MongoClient} from 'mongodb';
 let db;
 
 const initDB = () => {
-    // const dbString = 'mongodb://admin:admin1453@ds125423.mlab.com:25423/translation';
-    const dbString = 'mongodb://localhost:27017/translation';
+    const dbString = 'mongodb://admin:admin1453@ds125423.mlab.com:25423/translation';
+    // const dbString = 'mongodb://localhost:27017/translation';
     const dbPV = MongoClient.connect(dbString);
 
     db = dbPV;
