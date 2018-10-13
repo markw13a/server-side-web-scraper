@@ -15,12 +15,20 @@ class NewArticle extends React.Component {
                     <input type="text" id="endpointTitle" name="endpointTitle" />
                 </div>
                 <div>
+                    <label for="sourceLanguage">Source language: </label>
+                    <input type="text" id="sourceLanguage" name="sourceLanguage" />
+                </div>
+                <div>
                     <label for="sourceLanguageTitle">Source language title: </label>
                     <input type="text" id="sourceLanguageTitle" name="sourceLanguageTitle" />
                 </div>
                 <div>
                     <label for="sourceLanguageText">Source language text: </label>
                     <textarea id="sourceLanguageText" name="sourceLanguageText" />
+                </div>
+                <div>
+                    <label for="targetLanguage">Target language: </label>
+                    <input type="text" id="targetLanguage" name="targetLanguage" />
                 </div>
                 <div>
                     <label for="targetLanguageTitle">Target language title: </label>

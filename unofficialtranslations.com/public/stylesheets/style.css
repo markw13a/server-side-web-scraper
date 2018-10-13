@@ -1,0 +1,186 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: Verdana, Helvetica;
+    line-height: 200%;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: Helvetica;
+}
+
+.readMore > a, .NavBar a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Default grid layout */
+.Page {
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+    grid-template-rows: 100px 1fr 100px;
+    grid-template-areas: 
+        "NavBar NavBar NavBar"
+        ". container ."
+        "footer footer footer";
+
+    height: 100%;
+    width: 100%;
+}
+
+.NavBar a {
+    font-size: 1.5em;
+}
+
+.NavBar, .footer {
+    background-color: #00a6d0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.footer {
+    grid-area: footer;
+}
+
+.NavBar {
+    grid-area: NavBar;
+    margin: auto;
+}
+
+.NavBar ul {
+    text-align: center;
+    list-style-type: none;
+    padding-top: 30px;
+}
+
+.container {
+    grid-area: container;
+    background: #fff;
+}
+
+.title, .blurb {
+    margin: auto;
+    width: 100%;
+}
+
+/* IndexPage */
+.article{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 
+        "title title"
+        "image image"
+        "blurb blurb"
+        "other other";
+    grid-gap: 20px;
+
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #000;
+
+    margin: 25px auto;
+    margin-bottom: 0px;
+
+    text-align: center;
+}
+
+.imgContainer {
+    grid-area: image;
+    align-items: center;
+    margin: auto;
+}
+
+.imgContainer img {
+    width: 100%;
+    max-height: 500px;
+    max-width: 500px;
+    height: auto;
+}
+
+.other {
+    grid-area: other;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "extraInfo . readMore";
+    align-items: center;
+}
+
+.other > .extraInfo {
+    grid-area: extraInfo;
+    margin: auto;
+}
+
+.other > .readMore {
+    grid-area: readMore;
+    margin: auto;
+}
+
+.blurb {
+    grid-area: blurb;
+}
+
+.title {
+    grid-area: title;
+}
+
+/* ArticlePage */
+.ArticlePage .article{
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        "title title"
+        "image image"
+        "blurb blurb"
+        "text  text";
+    grid-gap: 20px;
+
+    border-bottom: none;
+    margin: 25px auto;
+}
+
+.ArticlePage .text {
+    grid-area: text;
+    text-align: left;
+}
+
+/* Standard "Call To Action" button */
+.cta {
+    color: #fff;
+    background-color: #00a6d0;
+    padding: 10px;
+    border: 3px solid #00a6d0;
+    border-radius: 5px;
+    text-align: center;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+.languageSwitcher {
+    width: 175px;
+    background-color: #f1f1f1;
+    text-align: center;
+    margin: auto;
+}
+
+.languageSwitcher label {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 86px;
+}
+
+.checked {
+    color: #fff;
+    background-color: #727272;
+    /* box-shadow: 0 1px 0 #727272; */
+    border: 3px solid #a9a9a9;
+}
+
+.ArticlePage a {
+    grid-column-start: 3;
+    margin: auto;
+}

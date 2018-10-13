@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import NavBar from './NavBar';
+import Footer from './Footer';
 
 class IndexPage extends React.Component {
     constructor(props){
@@ -22,31 +24,48 @@ class IndexPage extends React.Component {
     };
 
     render() {
-        const {value, resolved} = this.state.data;
+        let {value, resolved} = this.state.data;
 
         return (
-            <div className="IndexPage"> 
-                {resolved ? <ArticlesList articles={this.state.data.value} /> : null}
+            <div className="IndexPage Page"> 
+                <NavBar />
+                {true ? <ArticlesList articles={value} /> : null}
+                <Footer />
             </div>
         );
     };
 }
 
 /**
- * @param articles json object containing info on articles
+ * @param articles array of json objects containing info on articles
  */
 const ArticlesList = ({articles}) => {
     if( !articles ) return null;
 
+    // want to display newest > oldest
+    articles.reverse();
+
+    // Put the stored date string in to a more human-readable form
+    const  dateOptions = {year: 'numeric', month: 'long', day: 'numeric' };
+
     return (
-        articles.map( article => (
-            <div className="article">
-                <h2>{article.targetLanguageTitle}</h2>
-                <small>{article.date}</small>
-                <img src={article.image} />
-                <div className="blurb">{article.blurb}</div>
-            </div>
-        ))
+        <div className="container">
+            {articles.map( article => (
+                <div className="article">
+                    <h2 className="title">{article.targetLanguageTitle}</h2>
+                    <div className="imgContainer"><img src={article.image} /></div>
+                    <div className="blurb">{article.blurb}</div>
+                    <div className="other">
+                        <div className="extraInfo">
+                            <small className="date">{new Date(article.date).toLocaleDateString("en-UK", dateOptions)}</small>
+                        </div>
+                        <div className="readMore cta">
+                            <a href={'/article/' + article.endpointTitle}>Read More</a>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
     );
 };
 

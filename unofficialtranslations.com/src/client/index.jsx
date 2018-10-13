@@ -4,13 +4,16 @@ import { render } from 'react-dom';
 import NewArticle from './components/NewArticle';
 import DeletePage from './components/DeletePage';
 import IndexPage from './components/IndexPage';
+import ArticlePage from './components/ArticlePage';
 import ErrorPage from './components/ErrorPage';
 
 const pages = {
-    '/': IndexPage,
-    '/rest/delete': DeletePage,
-    '/rest/create': NewArticle
-}
+    article: ArticlePage,
+    rest:{
+        delete: DeletePage,
+        create: NewArticle
+    }
+};
 
 class Main extends React.Component {
     constructor(props) {
@@ -27,7 +30,23 @@ class Main extends React.Component {
 
     render() {
         const {pathname} = this.state;
-        const Page = pages[pathname] || ErrorPage;
+
+        // first entry will always be [""]
+        const pathBits = pathname.split("/").slice(1);
+
+        // Iterate through pages object
+        // Should return a React Component to be used
+        // IndexPage is set as a default below
+        let Page = pathBits.reduce( (pages, pathBit) => {
+            // Want to stop if we have already found a React Component
+            if ( React.Component.isPrototypeOf(pages) ) return pages;
+            
+            if( !pages ) return null;
+            
+            return pages[pathBit];
+        }, pages);
+
+        if( !Page ) Page = IndexPage;
 
         return <Page />;
     };
