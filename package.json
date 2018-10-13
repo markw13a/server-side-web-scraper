@@ -2,7 +2,7 @@
   "name": "practiceapp",
   "version": "0.0.0",
   "scripts": {
-    "start": "webpack && babel-node ./bin/www",
+    "start": "babel-node ./bin/www",
     "webpack": "./node_modules/.bin/webpack",
     "webpack-watch": "./node_modules/.bin/webpack -w"
   },
