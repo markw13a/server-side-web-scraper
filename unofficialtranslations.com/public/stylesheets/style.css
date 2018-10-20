@@ -55,6 +55,11 @@ h1, h2, h3, h4, h5 {
     padding-top: 30px;
 }
 
+.NavBar li {
+    display: inline;
+    margin-right: 15px;
+}
+
 .container {
     grid-area: container;
     background: #fff;

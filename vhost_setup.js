@@ -16,7 +16,7 @@ var app = express();
 const createVHost = (domainName, app) => vhost(domainName, app);
 
 const jobSite = createVHost('markw13a.co.uk', markw13aApp);
-const unofficialTranslationHost = createVHost('unofficialtranslations.com', unofficialTranslationApp);
+const unofficialTranslationHost = createVHost('*.unofficialtranslations.com', unofficialTranslationApp);
 
 app
  .use(unofficialTranslationHost)

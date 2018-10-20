@@ -5,10 +5,12 @@ import NewArticle from './components/NewArticle';
 import DeletePage from './components/DeletePage';
 import IndexPage from './components/IndexPage';
 import ArticlePage from './components/ArticlePage';
+import AboutPage from './components/AboutPage';
 import ErrorPage from './components/ErrorPage';
 
 const pages = {
     article: ArticlePage,
+    about: AboutPage,
     rest:{
         delete: DeletePage,
         create: NewArticle
