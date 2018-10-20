@@ -17,7 +17,7 @@ class IndexPage extends React.Component {
 
     // retrieve article data from back-end
     componentDidMount() {
-        axios.get('http://unofficialtranslations.com/rest/get')
+        axios.get('/rest/get')
             .then(value => {
                 this.setState({data: {value: value.data.data, resolved: true}});
             });

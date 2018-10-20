@@ -23,7 +23,7 @@ class ArticlePage extends React.Component {
     // retrieve article data from back-end
     componentDidMount() {
         const {endpointTitle} = this.state;
-        axios.get('http://unofficialtranslations.com/rest/get' + '/' + endpointTitle)
+        axios.get('/rest/get' + '/' + endpointTitle)
             .then(value => {
                 this.setState({data: {value: value.data.data[0], resolved: true}});
             });
@@ -64,7 +64,7 @@ const Article = ({article, sourceOrTarget}) => {
                 <h2 className="title">{article[sourceOrTarget + 'Title']}</h2>
                 <div className="imgContainer"><img src={article.image} /></div>                    
                 <div className="blurb"><small>{article.blurb}</small></div>
-                <div className="text">{article[sourceOrTarget + 'Text']}</div>
+                <div className="text" dangerouslySetInnerHTML={{__html: article[sourceOrTarget + 'Text']}} />
             </div>
     );
 };
